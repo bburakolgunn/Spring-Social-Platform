@@ -24,42 +24,37 @@ public class User {
 	@Column(name = "id")
 	private long id;
 
-	//@Size(min = 4, max =100)
-	@NotBlank(message  = "{webservice.constraint.username.notblank}")
-	//@NotNull(message  ="Username not null")
+
 	@Column(name = "username")
 	private String username;
 	
-	@NotBlank
-	//@NotNull(message  ="Email not null")
-	@Email
+
 	@Column(name = "email")
-	@UniqueEmail
 	private String email;
 	
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",message = "{webservice.constraint.password.pattern}")
-	@Size(min = 4, max =100)
-	//@NotBlank(message  ="Password can't be blank")
-	//@NotNull(message  ="Password not null")
+
 	@Column(name = "password")
 	private String password;
+	
+	@Column(name = "active")
+	private boolean active = false;
+	
+	@Column(name = "activationtoken")
+	private String activationtoken;
 	
 	public User() {
 		
 	}
-	
 
-	
-	
-	public User(long id, String username, String email, String password) {
+	public User(long id, String username,String email,String password,boolean active, String activationToken) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.active = active;
+		this.activationtoken = activationtoken;
 	}
-	
-	
 
 	public long getId() {
 		return id;
@@ -93,6 +88,28 @@ public class User {
 		this.password = password;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getActivationtoken() {
+		return activationtoken;
+	}
+
+	public void setActivationtoken(String activationtoken) {
+		this.activationtoken = activationtoken;
+	}
+
+
+	
+	
+	
+
+	
 	
 	
 	

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.management.webservice.Entity.User;
 import com.management.webservice.Repository.UserRepository;
 import com.management.webservice.Service.UserService;
+import com.management.webservice.dto.UserCreate;
 import com.management.webservice.exception.Error;
 import com.management.webservice.exception.NotUniqueEmailException;
 import com.management.webservice.shared.GenericMessage;
@@ -42,8 +43,8 @@ public class UserController {
 
 
 	@PostMapping("/api/v1/users")
-   public ResponseEntity<?> save(@Valid @RequestBody User user){
-		User savedUser = userService.save(user);
+   public ResponseEntity<?> save(@Valid @RequestBody UserCreate user){
+		User savedUser = userService.save(user.toUser());
 		String message = Messages.getMessageForLocale("webservice.create.user.success.message"
 				,LocaleContextHolder.getLocale());
 		GenericMessage genericMessage = new GenericMessage(message);
