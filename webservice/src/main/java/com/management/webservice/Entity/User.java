@@ -1,17 +1,22 @@
 package com.management.webservice.Entity;
 
+import com.management.webservice.validation.UniqueEmail;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="users")
+@Table(name="users", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class User {
 	
 	@Id
@@ -19,22 +24,29 @@ public class User {
 	@Column(name = "id")
 	private long id;
 
-	//@NotBlank(message  ="Username can't be blank")
+	//@Size(min = 4, max =100)
+	@NotBlank(message  = "{webservice.constraint.username.notblank}")
 	//@NotNull(message  ="Username not null")
 	@Column(name = "username")
 	private String username;
 	
-	//@NotBlank(message  ="Email can't be blank")
+	@NotBlank
 	//@NotNull(message  ="Email not null")
-	//@Email(message = "Email should be valid")
+	@Email
 	@Column(name = "email")
+	@UniqueEmail
 	private String email;
 	
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",message = "{webservice.constraint.password.pattern}")
+	@Size(min = 4, max =100)
 	//@NotBlank(message  ="Password can't be blank")
 	//@NotNull(message  ="Password not null")
 	@Column(name = "password")
 	private String password;
 	
+	public User() {
+		
+	}
 	
 
 	

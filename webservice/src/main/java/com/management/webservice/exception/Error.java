@@ -16,10 +16,26 @@ public class Error {
 	
 	private Map<String, String> validationError = new HashMap<>();
 	
-	
+	public Error() {
+		
+	}
 	
 
-	
+	public Error(int status, String message, String path, long timestamp, Map<String, String> validationError) {
+		super();
+		this.status = status;
+		this.message = message;
+		this.path = path;
+		this.timestamp = timestamp;
+		this.validationError = validationError;
+	}
+
+
+
+
+
+
+
 
 	public int getStatus() {
 		return status;
@@ -64,3 +80,8 @@ public class Error {
 	
 
 }
+
+
+
+
+
