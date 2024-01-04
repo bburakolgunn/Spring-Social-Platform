@@ -21,6 +21,7 @@ import com.management.webservice.Entity.User;
 import com.management.webservice.Repository.UserRepository;
 import com.management.webservice.Service.UserService;
 import com.management.webservice.dto.UserCreate;
+import com.management.webservice.exception.ActivationNotificationException;
 import com.management.webservice.exception.Error;
 import com.management.webservice.exception.NotUniqueEmailException;
 import com.management.webservice.shared.GenericMessage;
@@ -35,10 +36,10 @@ public class UserController {
 	//private MessageSource messageSource;
 	
 	
-	public UserController(UserService userService, MessageSource messageSource) {
-		super();
+	public UserController(UserService userService ) {
+		
 		this.userService = userService;
-		//this.messageSource = messageSource;
+	
 	}
 
 
@@ -54,7 +55,6 @@ public class UserController {
 	
 	//Hata yönetimi
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus(HttpStatus.OK.BAD_REQUEST)
 	ResponseEntity<Error> handleMethodArgNotValidEx(MethodArgumentNotValidException exception){
 		Error error = new Error();
 		error.setPath("/api/v1/users");
@@ -83,8 +83,20 @@ public class UserController {
 			error.setMessage(exception.getMessage());
 			error.setStatus(400);
 			error.setValidationError(exception.getValidationError());
-			return ResponseEntity.badRequest().body(error);
+			return ResponseEntity.status(400).body(error);
 		}
+		
+		
+		@ExceptionHandler(ActivationNotificationException.class)
+		@ResponseStatus(HttpStatus.OK.BAD_REQUEST)
+		ResponseEntity<Error> handleActivationNotificationException(ActivationNotificationException exception){
+			Error error = new Error();
+			error.setPath("/api/v1/users");
+			error.setMessage(exception.getMessage());
+			error.setStatus(502);
+			return ResponseEntity.status(502).body(error);
+		}
+		
 
 }
 

@@ -4,6 +4,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -14,66 +15,50 @@ import org.springframework.stereotype.Service;
 import com.management.webservice.Entity.User;
 import com.management.webservice.Repository.UserRepository;
 import com.management.webservice.Service.impl.UserServiceImpl;
+import com.management.webservice.exception.ActivationNotificationException;
 import com.management.webservice.exception.NotUniqueEmailException;
+
+import jakarta.transaction.Transactional;
 
 
 @Service
 public class UserService implements UserServiceImpl {
 	
-	private final UserRepository userRepository;
+	private  UserRepository userRepository;
+	private  EmailService emailService;
 	
 	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository,EmailService emailService) {
 		super();
 		this.userRepository = userRepository;
+		this.emailService = emailService;
 	}
 
 
 
 	@Override
+	@Transactional(rollbackOn = MailException.class)
+	//Spring'e diyoruz eğer bu metot bu fonksiyon bir MailException ile karşılarsa database yazılan verileri geri al.
 	public User save(User user) {
-		
-		try {
-			
-			User savedUser = userRepository.save(user);
-	        sendActivationEmail(savedUser);
+	    try {
+	        User savedUser = userRepository.save(user);
 	        savedUser.setActivationtoken(UUID.randomUUID().toString());
-			String encodedPassword = passwordEncoder.encode(user.getPassword());
-			user.setPassword(encodedPassword);
-			return savedUser;
-			
-		}catch(DataIntegrityViolationException ex){
-			throw new NotUniqueEmailException();
-		}
-		
+	        savedUser.setPassword(passwordEncoder.encode(savedUser.getActivationtoken()));
+	        userRepository.save(savedUser);
+	        emailService.sendActivationEmail(savedUser.getEmail(),savedUser.getActivationtoken());
+	      
+	        return savedUser;
+
+	    } catch (DataIntegrityViolationException ex) {
+	        throw new NotUniqueEmailException();
+	    }catch(MailException ex) {
+	    	throw new ActivationNotificationException();
+	    }
 	}
 
 
-	//Email aktive etme	
-	private void sendActivationEmail(User user) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("noreply@my-app.com");
-		message.setTo(user.getEmail());
-		message.setSubject("Account Activation");
-		message.setText("http://localhost:5173/activation/" + user.getActivationtoken());
-		getJavaMailSender().send(message);
-	}
 	
-	
-	public JavaMailSender getJavaMailSender() {
-		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.ethereal.email");
-		mailSender.setPort(587);
-		mailSender.setUsername("guy51@ethereal.email");
-		mailSender.setPassword("Kd9HvvG8U9UHWD5mmW");
-		
-		Properties properties = mailSender.getJavaMailProperties();
-		properties.put("mail.smtp.starttls.enable", "true");
-		return mailSender;
-		
-		
-	}
 
 }
 

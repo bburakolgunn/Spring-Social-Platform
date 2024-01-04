@@ -46,6 +46,7 @@ public class User {
 		
 	}
 
+	
 	public User(long id, String username,String email,String password,boolean active, String activationToken) {
 		super();
 		this.id = id;

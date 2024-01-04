@@ -1,9 +1,15 @@
 package com.management.webservice.exception;
 
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+
+@JsonInclude(value = Include.NON_NULL)
 public class Error {
 	
 	private int status;
@@ -14,7 +20,9 @@ public class Error {
 	
 	private long timestamp = new Date().getTime();
 	
-	private Map<String, String> validationError = new HashMap<>();
+	private Map<String, String> validationError = null; //Burada çünkü neden null yapıldı
+	//Çünkü ActivationNotification exception da validatiton array olarak gözükmektedir.
+	//Burada JsonInclude yaparak null olmayan field ları json'a ekle diyoruz.
 	
 	public Error() {
 		

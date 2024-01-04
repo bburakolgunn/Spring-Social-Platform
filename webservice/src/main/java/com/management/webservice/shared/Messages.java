@@ -7,6 +7,7 @@ public class Messages {
 	
 	public static String getMessageForLocale(String messageKey,Locale locale) {
 		return ResourceBundle.getBundle("messages",locale).getString(messageKey);
+		
 	}
 
 }
