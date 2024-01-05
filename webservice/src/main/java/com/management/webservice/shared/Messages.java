@@ -1,13 +1,21 @@
 package com.management.webservice.shared;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Messages {
 	
 	public static String getMessageForLocale(String messageKey,Locale locale) {
-		return ResourceBundle.getBundle("messages",locale).getString(messageKey);
-		
+		return ResourceBundle.getBundle("messages",locale).getString(messageKey);	
 	}
+	
+	
+	
+	public static String getMessageForLocale(String messageKey,Locale locale,Object... arguments ) {
+		String message = getMessageForLocale(messageKey, locale);
+		 return MessageFormat.format(message, arguments); //Mesajın içindeki ID'nin yer alması gereken yeri ID'yi koyup text halinde dönüyor
+	}
+
 
 }

@@ -1,6 +1,8 @@
 package com.management.webservice.Entity;
 
-import com.management.webservice.validation.UniqueEmail;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,11 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name="users", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
@@ -32,22 +30,30 @@ public class User {
 	@Column(name = "email")
 	private String email;
 	
-
+	
 	@Column(name = "password")
 	private String password;
+	
 	
 	@Column(name = "active")
 	private boolean active = false;
 	
+	
 	@Column(name = "activationtoken")
 	private String activationtoken;
+	
+	@Column(name = "image")
+	private String image;
 	
 	public User() {
 		
 	}
 
 	
-	public User(long id, String username,String email,String password,boolean active, String activationToken) {
+	
+	
+	public User(long id, String username, String email, String password, boolean active, String activationtoken,
+			String image) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -55,7 +61,11 @@ public class User {
 		this.password = password;
 		this.active = active;
 		this.activationtoken = activationtoken;
+		this.image = image;
 	}
+
+
+
 
 	public long getId() {
 		return id;
@@ -106,11 +116,20 @@ public class User {
 	}
 
 
-	
-	
-	
 
-	
+
+	public String getImage() {
+		return image;
+	}
+
+
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
 	
 	
 	
