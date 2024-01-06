@@ -16,6 +16,7 @@ public interface UserServiceImpl {
 	
 	Page<User> getUsers(Pageable page);
 	
-	
 	User getUser(long id);
+	
+	User findByEmail(String email);
 }

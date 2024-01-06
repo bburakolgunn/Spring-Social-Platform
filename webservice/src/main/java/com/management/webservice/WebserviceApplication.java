@@ -15,6 +15,12 @@ import com.management.webservice.Repository.UserRepository;
 
 
 
+
+
+
+
+
+
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class WebserviceApplication {
 
@@ -29,7 +35,7 @@ public class WebserviceApplication {
 	CommandLineRunner userCreator(UserRepository userRepository) {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		return (args) -> {
-			for(var i=1;i<=25;i++) {
+			for(var i=1;i<=10;i++) {
 				User user = new User();
 				user.setUsername("user" + i);
 				user.setEmail("user"+i+"@mail.com");

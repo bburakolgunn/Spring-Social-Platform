@@ -22,7 +22,7 @@ public class Error {
 	
 	private Map<String, String> validationError = null; //Burada çünkü neden null yapıldı
 	//Çünkü ActivationNotification exception da validatiton array olarak gözükmektedir.
-	//Burada JsonInclude yaparak null olmayan field ları json'a ekle diyoruz.
+	//Burada JsonInclude yaparak null olmayan field ları json'a ekle diyoruz.//
 	
 	public Error() {
 		
