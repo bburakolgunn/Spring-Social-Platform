@@ -12,6 +12,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.token.Token;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,14 @@ import com.management.webservice.Entity.User;
 import com.management.webservice.Repository.UserRepository;
 import com.management.webservice.Service.impl.UserServiceImpl;
 import com.management.webservice.dto.UserDTO;
+import com.management.webservice.dto.UserUpdate;
 import com.management.webservice.exception.ActivationNotificationException;
 import com.management.webservice.exception.InvalidTokenException;
 import com.management.webservice.exception.NotFoundException;
 import com.management.webservice.exception.NotUniqueEmailException;
 
 import jakarta.transaction.Transactional;
+
 
 
 @Service
@@ -78,8 +81,11 @@ public class UserService implements UserServiceImpl {
 
 
 	@Override
-	public Page<User> getUsers(Pageable page) {
-		return userRepository.findAll(page);
+	public Page<User> getUsers(Pageable page,User loggedInUser) {
+		if(loggedInUser == null) {
+			return userRepository.findAll(page);
+		}
+		return userRepository.findByIdNot(loggedInUser.getId(), page);
 	}
 
 
@@ -96,6 +102,17 @@ public class UserService implements UserServiceImpl {
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email) ;
 	}
+
+
+
+	@Override
+	public User updateUser(long id, UserUpdate userUpdate) {
+		User inDB = getUser(id); //Yoksa exception dönecek.
+		inDB.setUsername(userUpdate.username());
+		return userRepository.save(inDB);
+	}
+
+
 
 
 
