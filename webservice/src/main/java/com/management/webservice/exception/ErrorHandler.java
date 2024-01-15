@@ -24,8 +24,8 @@ public class ErrorHandler {
 		ActivationNotificationException.class,
 		InvalidTokenException.class,
 		NotFoundException.class,
-		AuthenticationException.class,
-		AuthorizationException.class
+		AuthenticationException.class
+		
 		
 	})
 	
@@ -60,8 +60,6 @@ public class ErrorHandler {
 			error.setStatus(403);
 		}else if (exception instanceof AuthenticationException) {
 			error.setStatus(401);
-		}else if (exception instanceof AuthorizationException) {
-			error.setStatus(403);
 		}
 		
 		return ResponseEntity.status(error.getStatus()).body(error);

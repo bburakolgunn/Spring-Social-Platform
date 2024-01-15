@@ -32,8 +32,8 @@ public class WebserviceApplication {
 	//25 adet user kullanılmıştır.
 	@Bean
 	@Profile("dev")
-	CommandLineRunner userCreator(UserRepository userRepository) {
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	CommandLineRunner userCreator(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		 
 		return (args) -> {
 			for(var i=1;i<=10;i++) {
 				User user = new User();
@@ -43,6 +43,13 @@ public class WebserviceApplication {
 				user.setActive(true);
 				userRepository.save(user);
 			}
+			User user = new User();
+			user.setUsername("user26");
+			user.setEmail("user26@mail.com");
+			user.setPassword(passwordEncoder.encode("P4ssword"));
+			user.setActive(false);
+			userRepository.save(user);
+			
 		};
 	}
 

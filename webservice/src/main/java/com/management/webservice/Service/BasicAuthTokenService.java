@@ -16,13 +16,13 @@ public class BasicAuthTokenService implements TokenServiceImpl {
 	
 	
 	 private UserService userService; //Database'den User'ı Query edilecek
-	 
-	public BasicAuthTokenService(UserService userService) {
+	 private PasswordEncoder passwordEncoder;
+
+	public BasicAuthTokenService(UserService userService, PasswordEncoder passwordEncoder) {
 		super();
 		this.userService = userService;
+		this.passwordEncoder = passwordEncoder;
 	}
-	
-	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Override
 	public Token createToken(User user, Credentials creds) { //Base64 Aunthencoded

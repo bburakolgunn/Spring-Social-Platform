@@ -11,7 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.token.TokenService;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +34,7 @@ import com.management.webservice.Entity.User;
 import com.management.webservice.Repository.UserRepository;
 import com.management.webservice.Service.BasicAuthTokenService;
 import com.management.webservice.Service.UserService;
+import com.management.webservice.configuration.CurrentUser;
 import com.management.webservice.dto.UserCreate;
 import com.management.webservice.dto.UserDTO;
 import com.management.webservice.dto.UserUpdate;
@@ -85,10 +89,10 @@ public class UserController {
     }
 	
 	@GetMapping("api/v1/users")
-	Page<UserDTO> getUsers(Pageable page, @RequestHeader(name="Authorization",required = false) String authorizationHeader ){
-		var loggedInUser = tokenService.verifyToken(authorizationHeader);
-		return userService.getUsers(page,loggedInUser).map(UserDTO::new); //Bütüm Page içerisindeki user objeleri UserDTO'ya çevrilmiş olacak.
+	Page<UserDTO> getUsers(Pageable page,@AuthenticationPrincipal CurrentUser currentUser ){
+		return userService.getUsers(page,currentUser).map(UserDTO::new); //Bütüm Page içerisindeki user objeleri UserDTO'ya çevrilmiş olacak.
 	}
+	
 	
 	@GetMapping("api/v1/users/{id}")
 	UserDTO getUserById(@PathVariable long id) {
@@ -96,12 +100,10 @@ public class UserController {
 	}
 	
 	@PutMapping("api/v1/users/{id}")
-	UserDTO updateUser(@PathVariable long id,@Valid  @RequestBody UserUpdate userUpdate,
-			@RequestHeader(name="Authorization",required = false) String authorizationHeader) {
-		var loggedInUser = tokenService.verifyToken(authorizationHeader);
-		if(loggedInUser == null || loggedInUser.getId() != id) {
-			throw new AuthenticationException();
-		}
+	@PreAuthorize("#id == principal.id")//id değeri ile CurrentUser'ın id si arasındaki eşitsizliğe bakmak.Ama biz burada eşit olmasını isteyeceğiz.Çünkü eğer
+	//Bu logic eşitse bu metodun execute edilmesi izin vericek
+	UserDTO updateUser(@PathVariable long id,@Valid  @RequestBody UserUpdate userUpdate ){ //@AuthenticationPrincipal CurrentUser currentUser   @AuthenticationPrincipal currentuser tipindeki var olan
+		//login olan kullanıcıları almak istediğimizi söylüyor. 
 		return new UserDTO(userService.updateUser(id, userUpdate));
 	}
 	

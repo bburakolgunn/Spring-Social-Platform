@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.management.webservice.Entity.User;
 import com.management.webservice.Repository.UserRepository;
 import com.management.webservice.Service.impl.UserServiceImpl;
+import com.management.webservice.configuration.CurrentUser;
 import com.management.webservice.dto.UserDTO;
 import com.management.webservice.dto.UserUpdate;
 import com.management.webservice.exception.ActivationNotificationException;
@@ -36,15 +37,14 @@ public class UserService implements UserServiceImpl {
 	
 	private  UserRepository userRepository;
 	private  EmailService emailService;
-	
-	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	private PasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository userRepository,EmailService emailService) {
+	public UserService(UserRepository userRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
 		super();
 		this.userRepository = userRepository;
 		this.emailService = emailService;
+		this.passwordEncoder = passwordEncoder;
 	}
-
 
 
 	@Override
@@ -81,11 +81,11 @@ public class UserService implements UserServiceImpl {
 
 
 	@Override
-	public Page<User> getUsers(Pageable page,User loggedInUser) {
-		if(loggedInUser == null) {
+	public Page<User> getUsers(Pageable page,CurrentUser currentUser) {
+		if(currentUser == null) {
 			return userRepository.findAll(page);
 		}
-		return userRepository.findByIdNot(loggedInUser.getId(), page);
+		return userRepository.findByIdNot(currentUser.getId(), page);
 	}
 
 

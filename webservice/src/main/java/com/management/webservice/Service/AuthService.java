@@ -26,15 +26,19 @@ public class AuthService implements AuthServiceImpl {
 	
 	
 	
-	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	private PasswordEncoder passwordEncoder;
 
 
-	public AuthService(UserService userService,
-															TokenServiceImpl tokenServiceImpl) {
-														super();
-														this.userService = userService;
-														this.tokenServiceImpl = tokenServiceImpl;
-													}
+
+	public AuthService(UserService userService,TokenServiceImpl tokenServiceImpl,PasswordEncoder passwordEncoder) {
+		super();
+		this.userService = userService;
+		this.tokenServiceImpl = tokenServiceImpl;
+		this.passwordEncoder = passwordEncoder;
+		}
+
+
+
 
 	@Override
 	//Email ve Password var Credentials'da,burada database'den user'ı bulunur ve password ile eşleşiyor mu?

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.management.webservice.Entity.User;
+import com.management.webservice.configuration.CurrentUser;
 import com.management.webservice.dto.UserDTO;
 import com.management.webservice.dto.UserUpdate;
 
@@ -15,7 +16,7 @@ public interface UserServiceImpl {
 	
 	public void activateUser(String token);
 	
-	Page<User> getUsers(Pageable page,User loggedInUser);
+	Page<User> getUsers(Pageable page,CurrentUser currentUser);
 	
 	User getUser(long id);
 	
