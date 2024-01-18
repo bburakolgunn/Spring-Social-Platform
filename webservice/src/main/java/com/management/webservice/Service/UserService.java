@@ -38,12 +38,15 @@ public class UserService implements UserServiceImpl {
 	private  UserRepository userRepository;
 	private  EmailService emailService;
 	private PasswordEncoder passwordEncoder;
+	private FileService fileService;
 
-	public UserService(UserRepository userRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, EmailService emailService, PasswordEncoder passwordEncoder,
+			FileService fileService) {
 		super();
 		this.userRepository = userRepository;
 		this.emailService = emailService;
 		this.passwordEncoder = passwordEncoder;
+		this.fileService = fileService;
 	}
 
 
@@ -109,6 +112,11 @@ public class UserService implements UserServiceImpl {
 	public User updateUser(long id, UserUpdate userUpdate) {
 		User inDB = getUser(id); //Yoksa exception dönecek.
 		inDB.setUsername(userUpdate.username());
+		if(userUpdate.image() != null) {
+			String fileName = fileService.saveBase64StringAsFile(userUpdate.image());
+			inDB.setImage(fileName);//user objesinde o dosya adında bir referans tutulacak.
+		}
+		
 		return userRepository.save(inDB);
 	}
 

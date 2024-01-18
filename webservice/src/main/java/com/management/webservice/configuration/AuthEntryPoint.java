@@ -2,6 +2,7 @@ package com.management.webservice.configuration;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -16,18 +17,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthEntryPoint implements AuthenticationEntryPoint {
 	
+	@Autowired
 	@Qualifier("handlerExceptionResolver") //debugdan bu hata ortaya çıkmaktadır.injekt ediyoruz.
 	private HandlerExceptionResolver exceptionResolver;
 	
 	
-	public AuthEntryPoint(HandlerExceptionResolver exceptionResolver) {
-		super();
-		this.exceptionResolver = exceptionResolver;
-	}
+	
 
 
-	public AuthEntryPoint() {
-	}
+
 
 
 	@Override

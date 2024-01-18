@@ -15,6 +15,16 @@ public class WebServiceProperties {
 	
 	private Client client;
 	
+	private Storage storage = new Storage(); //default değerlerle initialize olabilmesi için instance oluşturulur.
+	
+	public Storage getStorage() {
+		return storage;
+	}
+
+	public void setStorage(Storage storage) {
+		this.storage = storage;
+	}
+
 	public Email getEmail() {
 		return email;
 	}
@@ -47,5 +57,25 @@ public class WebServiceProperties {
 			
 			) {}
 	
+	public static class Storage{  //default değerden dolayı class dedik.
+	
+		String root = "uploads";
+		String profile = "profile";
+		public String getRoot() {
+			return root;
+		}
+		public void setRoot(String root) {
+			this.root = root;
+		}
+		public String getProfile() {
+			return profile;
+		}
+		public void setProfile(String profile) {
+			this.profile = profile;
+		}
+		
+		
+		
+	}
 	
 }
