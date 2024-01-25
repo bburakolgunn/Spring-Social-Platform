@@ -14,7 +14,7 @@ public record UserUpdate(
 		@Size(min = 4, max =100)
 		 String username,
 		 
-		 @FileType
+		 @FileType(types = { "jpeg" })
 		 String image
 		
 		

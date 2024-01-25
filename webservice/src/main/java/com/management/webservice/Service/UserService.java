@@ -114,6 +114,7 @@ public class UserService implements UserServiceImpl {
 		inDB.setUsername(userUpdate.username());
 		if(userUpdate.image() != null) {
 			String fileName = fileService.saveBase64StringAsFile(userUpdate.image());
+			fileService.deleteProfileImage(inDB.getImage()); // eski profil image silme
 			inDB.setImage(fileName);//user objesinde o dosya adında bir referans tutulacak.
 		}
 		

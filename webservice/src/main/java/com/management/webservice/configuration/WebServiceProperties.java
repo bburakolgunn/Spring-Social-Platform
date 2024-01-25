@@ -17,6 +17,16 @@ public class WebServiceProperties {
 	
 	private Storage storage = new Storage(); //default değerlerle initialize olabilmesi için instance oluşturulur.
 	
+	private String tokenType;
+	
+	public String getTokenType() {
+		return tokenType;
+	}
+
+	public void setTokenType(String tokenType) {
+		this.tokenType = tokenType;
+	}
+
 	public Storage getStorage() {
 		return storage;
 	}

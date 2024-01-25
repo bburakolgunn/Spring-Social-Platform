@@ -3,13 +3,11 @@ package com.management.webservice.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -18,8 +16,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 	
-	//
+	private  TokenFilter tokenFilter;
 	
+	public SecurityConfiguration(TokenFilter tokenFilter) {
+		super();
+		this.tokenFilter = tokenFilter;
+	}
+
+
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authentication) -> 
@@ -32,16 +36,14 @@ public class SecurityConfiguration {
 		
 		http.csrf(csrf -> csrf.disable()); //Postmanda POST edildiği zaman 403 hatası dönüyor JSON boş iken,401 hatası dönmesi gerektiği için
 		http.headers(headers -> headers.disable());
+		
+		http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+		
 		return http.build();
 	}
 	
 	
-	//Spring Security'nin default password encoder'ı yok bu nedenle  bulunan userla ilgili bir process e devam edemiyor
-	//
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	
 	
 	
 	

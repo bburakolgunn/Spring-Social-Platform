@@ -2,7 +2,7 @@ package com.management.webservice.Service;
 
 import java.util.Base64;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +12,7 @@ import com.management.webservice.Service.impl.TokenServiceImpl;
 import com.management.webservice.dto.Credentials;
 
 @Service
+//@ConditionalOnProperty(name = "webservice.token-type", havingValue = "basic")
 public class BasicAuthTokenService implements TokenServiceImpl {
 	
 	
@@ -47,3 +48,6 @@ public class BasicAuthTokenService implements TokenServiceImpl {
 	}
 
 }
+
+
+

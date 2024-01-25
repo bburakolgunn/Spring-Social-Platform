@@ -21,12 +21,6 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
 	@Qualifier("handlerExceptionResolver") //debugdan bu hata ortaya çıkmaktadır.injekt ediyoruz.
 	private HandlerExceptionResolver exceptionResolver;
 	
-	
-	
-
-
-
-
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,

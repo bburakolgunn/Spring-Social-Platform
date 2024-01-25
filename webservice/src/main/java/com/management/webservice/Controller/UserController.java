@@ -34,6 +34,7 @@ import com.management.webservice.Entity.User;
 import com.management.webservice.Repository.UserRepository;
 import com.management.webservice.Service.BasicAuthTokenService;
 import com.management.webservice.Service.UserService;
+import com.management.webservice.Service.impl.TokenServiceImpl;
 import com.management.webservice.configuration.CurrentUser;
 import com.management.webservice.dto.UserCreate;
 import com.management.webservice.dto.UserDTO;
@@ -57,15 +58,18 @@ public class UserController {
 	
 	private UserService userService;
 	private BasicAuthTokenService tokenService;
+	private TokenServiceImpl tokenServiceImpl;
 	
 	//private MessageSource messageSource;
 	
-	
-	public UserController(UserService userService, BasicAuthTokenService tokenService) {
+	public UserController(UserService userService, BasicAuthTokenService tokenService,
+			TokenServiceImpl tokenServiceImpl) {
 		super();
 		this.userService = userService;
 		this.tokenService = tokenService;
+		this.tokenServiceImpl = tokenServiceImpl;
 	}
+	
 	
 
 	@PostMapping("/api/v1/users")
@@ -77,6 +81,10 @@ public class UserController {
 	    return new ResponseEntity<>(genericMessage, HttpStatus.CREATED);
 	}
 	
+
+
+
+
 
 
 	@PatchMapping("api/v1/users/{token}/active")
