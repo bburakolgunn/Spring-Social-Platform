@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SecurityBeans {
+public class SecurityBeans {//
 	
 	//Spring Security'nin default password encoder'ı yok bu nedenle  bulunan userla ilgili bir process e devam edemiyor
 		//

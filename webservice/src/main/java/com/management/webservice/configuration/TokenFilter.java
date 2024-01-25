@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class TokenFilter extends OncePerRequestFilter{
+public class TokenFilter extends OncePerRequestFilter{//
 	
 	@Autowired
 	@Qualifier("handlerExceptionResolver") //debugdan bu hata ortaya çıkmaktadır.injekt ediyoruz.

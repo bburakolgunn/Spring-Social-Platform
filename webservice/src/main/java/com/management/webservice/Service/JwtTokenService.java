@@ -2,7 +2,6 @@ package com.management.webservice.Service;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
