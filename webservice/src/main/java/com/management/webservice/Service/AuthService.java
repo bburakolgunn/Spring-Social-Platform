@@ -55,6 +55,15 @@ public class AuthService implements AuthServiceImpl {
 		
 	}
 
+
+
+
+	@Override
+	public void logout(String authorizationHeader) {
+		tokenServiceImpl.logout(authorizationHeader);
+		
+	}
+
 	
 	
 	

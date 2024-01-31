@@ -17,6 +17,7 @@ import org.springframework.security.core.token.TokenService;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,6 +37,8 @@ import com.management.webservice.Service.BasicAuthTokenService;
 import com.management.webservice.Service.UserService;
 import com.management.webservice.Service.impl.TokenServiceImpl;
 import com.management.webservice.configuration.CurrentUser;
+import com.management.webservice.dto.PasswordResetRequest;
+import com.management.webservice.dto.PasswordUpdate;
 import com.management.webservice.dto.UserCreate;
 import com.management.webservice.dto.UserDTO;
 import com.management.webservice.dto.UserUpdate;
@@ -115,10 +118,24 @@ public class UserController {
 		return new UserDTO(userService.updateUser(id, userUpdate));
 	}
 	
-
+	@DeleteMapping("api/v1/users/{id}")
+	@PreAuthorize("#id == principal.id")
+	GenericMessage deleteUser(@PathVariable long id ){ 
+		userService.deleteUser(id);
+		return new GenericMessage("User is deleted");
+	}
 	
+	@PostMapping("api/v1/users/password-reset")
+	GenericMessage passwordResetRequest(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
+		userService.handleResetRequest(passwordResetRequest);
+		return new GenericMessage("Check your email address to reset your password");
+	}
 	
-		
+	@PatchMapping("/api/v1/users/{token}/password")
+    GenericMessage setPassword(@PathVariable String token, @Valid @RequestBody PasswordUpdate passwordUpdate){
+        userService.updatePassword(token, passwordUpdate);
+        return new GenericMessage("Password updated successfully");
+    }
 		
 }
 

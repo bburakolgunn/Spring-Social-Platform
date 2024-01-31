@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 import com.management.webservice.Entity.User;
 import com.management.webservice.configuration.CurrentUser;
+import com.management.webservice.dto.PasswordResetRequest;
+import com.management.webservice.dto.PasswordUpdate;
 import com.management.webservice.dto.UserDTO;
 import com.management.webservice.dto.UserUpdate;
 
@@ -23,4 +25,10 @@ public interface UserServiceImpl {
 	User findByEmail(String email);
 	
 	User updateUser(long id, UserUpdate userUpdate);
+	
+	public void deleteUser(long id);
+	
+	public void handleResetRequest(PasswordResetRequest passwordResetRequest);
+	
+	public void updatePassword(String token, PasswordUpdate passwordUpdate);
 }

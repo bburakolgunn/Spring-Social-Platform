@@ -89,5 +89,24 @@ public class EmailService {
 			
 			this.mailSender.send(mimeMessage);
 		}
+		
+		public void sendPasswordResetEmail(String email, String passwordResetToken) {
+	        String passwordResetUrl = webServiceProperties.getClient().host() + "/password-reset/set?tk=" + passwordResetToken;
+	        MimeMessage mimeMessage = mailSender.createMimeMessage();
+	        MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+	        var title = "Reset your password";
+	        var clickHere = messageSource.getMessage("webservice.mail.click.here", null, LocaleContextHolder.getLocale());
+	        var mailBody = activationEmail.replace("${url}", passwordResetUrl).replace("${title}", title).replace("${clickHere}", clickHere);
+	        try {
+	          message.setFrom(webServiceProperties.getEmail().from());
+	          message.setTo(email); 
+	          message.setSubject(title); 
+	          message.setText(mailBody, true);
+	        } catch (MessagingException e) {
+	          e.printStackTrace();
+	        }
+	        this.mailSender.send(mimeMessage);
+	      }
+		
 	
 }

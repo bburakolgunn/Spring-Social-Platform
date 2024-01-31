@@ -8,5 +8,7 @@ public interface AuthServiceImpl {
 	
 	
 	 AuthResponse authenticate(Credentials creds);
+	 
+	 public void logout(String authorizationHeader);
 
 }

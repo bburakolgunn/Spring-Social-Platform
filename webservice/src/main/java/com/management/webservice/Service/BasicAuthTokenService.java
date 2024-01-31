@@ -47,6 +47,12 @@ public class BasicAuthTokenService implements TokenServiceImpl {
 		 
 	}
 
+	@Override
+	public void logout(String authorizationHeader) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 

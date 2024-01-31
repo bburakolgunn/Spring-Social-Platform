@@ -2,14 +2,18 @@ package com.management.webservice.Entity;
 
 
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -47,13 +51,16 @@ public class User {
 	@Column(name = "image")
 	private String image;
 	
+	@Column(name ="resettoken")
+	private String passwordResetToken;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)//Eğer user remove edilirse ona bağlı olan tokenlerı da remove edilsin.
+	List<Token> tokens;
+	
 	public User() {
 		
 	}
 
-	
-	
-	
 	public User(long id, String username, String email, String password, boolean active, String activationtoken,
 			String image) {
 		super();
@@ -67,7 +74,13 @@ public class User {
 	}
 
 
+	public String getPasswordResetToken() {
+		return passwordResetToken;
+	}
 
+	public void setPasswordResetToken(String passwordResetToken) {
+		this.passwordResetToken = passwordResetToken;
+	}
 
 	public long getId() {
 		return id;

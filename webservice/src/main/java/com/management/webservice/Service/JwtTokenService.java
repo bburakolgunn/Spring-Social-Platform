@@ -21,7 +21,6 @@ import io.jsonwebtoken.security.Keys;
 
 
 @Service
-@Primary
 public class JwtTokenService implements TokenServiceImpl {
 	
 	SecretKey key = Keys.hmacShaKeyFor("secret-must-be-at-least-32-chars".getBytes());
@@ -62,6 +61,12 @@ public class JwtTokenService implements TokenServiceImpl {
 	}
 	
 	public static record TokenSubject(long id,boolean active) {
+		
+	}
+
+	@Override
+	public void logout(String authorizationHeader) {
+		// TODO Auto-generated method stub
 		
 	}
 
